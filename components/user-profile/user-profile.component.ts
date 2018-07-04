@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 import { Subscription } from 'rxjs/';
 
@@ -19,41 +20,36 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   languages: any;
 
-  edit_bio = false;
-
   AUTHOR_IMAGE_URL: string;
 
   @ViewChild('file') file: ElementRef;
 
-  get isPageReady()
-  {
+  get isPageReady() {
     return this.user;
   }
 
   constructor(
+    public snackBar: MatSnackBar,
     private userRequestService: UserRequestService,
     private cacheService: CacheService
-  )
-  {
+  ) {
     this.AUTHOR_IMAGE_URL = this.userRequestService.makeUrl('public.image.author');
   }
 
   ngOnInit() {
     const rq2 = this.cacheService.get('languages', this.userRequestService.makeGetRequest('admin.languages'))
-                                .subscribe( response => this.languages = response )
+      .subscribe(response => this.languages = response);
 
-    const rq1 = this.userRequestService.getUserProfile().subscribe( response => this.user = response );
+    const rq1 = this.userRequestService.getUserProfile().subscribe(response => this.user = response);
 
     this.subs.add(rq1);
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
     this.subs.unsubscribe();
   }
 
-  showImage(img: string)
-  {
+  showImage(img: string) {
     const reader = new FileReader();
 
     const input = this.file.nativeElement;
@@ -62,7 +58,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     reader.onload = (e: any) => {
 
-      const rq3 = this.userRequestService.postUserProfileImage(this.file.nativeElement.files.item(0)).subscribe( response => {
+      const rq3 = this.userRequestService.postUserProfileImage(this.file.nativeElement.files.item(0)).subscribe(response => {
+
+        this.snackBar.open(response.message, response.action, {
+          duration: 2000
+        });
 
         item.setAttribute('src', e.target.result);
       });
@@ -73,27 +73,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(input.files.item(0));
   }
 
-  updateProfile(f: NgForm)
-  {
+  updateProfile(f: NgForm) {
     const rq2 = this.userRequestService.postUserProfile({
       name: f.value.name,
       biography: this.user.user_data.biography
-    }).subscribe( response => {
-                this.user = null;
+    }).subscribe(response => {
+      this.snackBar.open(response.message, response.action, {
+        duration: 2000
+      });
 
-                this.edit_bio = false;
+      this.user = null;
 
-                const rq1 = this.userRequestService.getUserProfile().subscribe( (user: any) => this.user = user);
+      const rq1 = this.userRequestService.getUserProfile().subscribe((user: any) => this.user = user);
 
-                this.subs.add(rq1);
-              });
+      this.subs.add(rq1);
+    });
 
     this.subs.add(rq2);
   }
-
-  updateProfileImage()
-  {
-    const rq3 = this.userRequestService.postUserProfileImage(this.file.nativeElement.files.item(0)).subscribe( response => null);
-  }
-
 }

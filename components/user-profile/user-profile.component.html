@@ -1,8 +1,68 @@
 <mat-spinner *ngIf="!isPageReady" class="loading"></mat-spinner>
 
 <div class="" *ngIf="isPageReady">
-  <div class="">
-    {{user.user_id}}<br>
+  <form #f="ngForm" (ngSubmit)="updateProfile(f)">
+    <div class="columns is-multiline">
+      <div class="column is-one-third">
+        <mat-card>
+
+          <div class="field">
+            <p class="is-size-4">Kişisel Bilgiler</p>
+            <hr>
+          </div>
+
+          <div class="field">
+            <mat-form-field>
+              <input matInput placeholder="İsim" [ngModel]="user.name" name="name" required>
+            </mat-form-field>
+          </div>
+
+          <div class="field">
+            <div class="" *ngFor="let language of languages;let i = index">
+              <mat-form-field class="textarea-body">
+                <textarea matInput [placeholder]="language.slug" [(ngModel)]="user.user_data.biography[language.slug]" [name]="language.slug"
+                  required></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="field">
+            <button mat-fab type="submit" class="add-btn" [disabled]="!f.valid">
+              <i class="fa fa-floppy-o is-size-4" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="field">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  Site Rolü
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  {{user.role.name}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="column is-one-third">
+        <mat-card>
+          <div class="image">
+            <input type="file" #file name="file" style="display: none" (change)="showImage('img')">
+            <a (click)="file.click()">
+              <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" alt="" id="img">
+            </a>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- <div class="">
+{{user.user_id}}<br>
 
     <form #f="ngForm" (ngSubmit)="updateProfile(f)">
 
@@ -36,4 +96,4 @@
     {{user.role.id}}<br>
     {{user.role.name}}
   </div>
-</div>
+</div> -->
