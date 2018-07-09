@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes }    from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
-const routes = [
-  { path: "", component: NavigationComponent, children: [
-      { path: "profile", component: UserProfileComponent }
+const routes: Routes = [
+  {
+    path: '', component: NavigationComponent, children: [
+      { path: 'profile', component: UserProfileComponent }
     ]
   }
 ];
@@ -14,8 +15,8 @@ const routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes,
-      { enableTracing: false}
-  )],
+      { enableTracing: false }
+    )],
   exports: [
     RouterModule
   ]
