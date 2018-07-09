@@ -55,6 +55,7 @@
             <a (click)="file.click()">
               <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" alt="" id="img">
             </a>
+            <button mat-raised-button *ngIf="!user.user_data.profile_image" type="button" (click)="file.click()">Fotoğraf Ekle</button>
           </div>
         </mat-card>
       </div>
