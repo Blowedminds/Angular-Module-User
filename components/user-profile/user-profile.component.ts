@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 
 import { Subscription } from 'rxjs/';
 
 import { CacheService } from '../../imports';
 import { UserRequestService } from '../../services/user-request.service';
+import { UserService } from '../../services/user.service';
 
+import { PasswordResetComponent } from '../../dialogs/password-reset/password-reset.component';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -30,7 +32,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     public snackBar: MatSnackBar,
+    public dialog: MatDialog,
     private userRequestService: UserRequestService,
+    private userService: UserService,
     private cacheService: CacheService
   ) {
     this.AUTHOR_IMAGE_URL = this.userRequestService.makeUrl('public.image.author');
@@ -90,5 +94,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
 
     this.subs.add(rq2);
+  }
+
+  resetPassword() {
+    const dialogRef = this.dialog.open(PasswordResetComponent, {
+      disableClose: true
+    });
+
+    const rq2 = dialogRef.afterClosed().subscribe(response => {
+      if (!response) {
+        return;
+      }
+
+      this.userService.openSnack(this.snackBar, response.message, response.action);
+
+      rq2.unsubscribe();
+    });
   }
 }

@@ -53,7 +53,7 @@
           <div class="image">
             <input type="file" #file name="file" style="display: none" (change)="showImage('img')">
             <a (click)="file.click()">
-              <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" alt="" id="img">
+              <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" alt="User Profile Image" id="img">
             </a>
             <button mat-raised-button *ngIf="!user.user_data.profile_image" type="button" (click)="file.click()">Fotoğraf Ekle</button>
           </div>
@@ -61,4 +61,29 @@
       </div>
     </div>
   </form>
+  <div class="columns is-multiline">
+    <div class="column is-one-third">
+      <mat-card>
+
+        <div class="field">
+          <p> Özel Bilgiler</p>
+          <hr>
+        </div>
+        <div class="field">
+          <div class="level">
+            <div class="level-left">
+              <div class="level-item">
+                Parola
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <button mat-stroked-button color="warn" (click)="resetPassword()">Parola Sıfırla</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
 </div>

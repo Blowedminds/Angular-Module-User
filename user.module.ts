@@ -7,6 +7,7 @@ import { UserRoutingModule } from './user-routing.module';
 
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { PasswordResetComponent } from './dialogs/password-reset/password-reset.component';
 
 import { UserRequestService } from './services/user-request.service';
 import { UserService } from './services/user.service';
@@ -14,7 +15,8 @@ import { UserService } from './services/user.service';
 @NgModule({
   declarations: [
     NavigationComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PasswordResetComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +27,9 @@ import { UserService } from './services/user.service';
   providers: [
     UserRequestService,
     UserService
+  ],
+  entryComponents: [
+    PasswordResetComponent
   ]
 })
 export class UserModule { }
