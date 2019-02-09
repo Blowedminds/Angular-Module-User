@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material';
 import { UserRequestService } from '../../services/user-request.service';
 
 @Component({
-  selector: 'password-reset',
+  selector: 'app-password-reset',
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.sass']
 })

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NavigationComponent } from './imports';
 
 const routes: Routes = [
   {

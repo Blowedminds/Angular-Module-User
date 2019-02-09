@@ -7,21 +7,22 @@
         <mat-card>
 
           <div class="field">
-            <p class="is-size-4">Kişisel Bilgiler</p>
+            <p class="is-size-4" i18n="@@personal-informations">Kişisel Bilgiler</p>
             <hr>
           </div>
 
           <div class="field">
             <mat-form-field>
-              <input matInput placeholder="İsim" [ngModel]="user.name" name="name" required>
+              <input matInput i18n-placeholder="@@user-name-placeholder" placeholder="İsim" [ngModel]="user.name" name="name"
+                required>
             </mat-form-field>
           </div>
 
           <div class="field">
             <div class="" *ngFor="let language of languages;let i = index">
               <mat-form-field class="textarea-body">
-                <textarea matInput [placeholder]="language.slug" [(ngModel)]="user.user_data.biography[language.slug]" [name]="language.slug"
-                  required></textarea>
+                <textarea matInput [placeholder]="language.slug" [(ngModel)]="user.user_data.biography[language.slug]"
+                  [name]="language.slug" required></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -36,7 +37,7 @@
             <div class="level">
               <div class="level-left">
                 <div class="level-item">
-                  Site Rolü
+                  <ng-container i18n="@@user-role">Site Rolü</ng-container>
                 </div>
               </div>
               <div class="level-right">
@@ -53,9 +54,11 @@
           <div class="image">
             <input type="file" #file name="file" style="display: none" (change)="showImage('img')">
             <a (click)="file.click()">
-              <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" alt="User Profile Image" id="img">
+              <img src="{{AUTHOR_IMAGE_URL + user.user_data.profile_image}}" i18n-alt="@@user-image-alt" alt="Kullanıcı Profil Resmi"
+                id="img">
             </a>
-            <button mat-raised-button *ngIf="!user.user_data.profile_image" type="button" (click)="file.click()">Fotoğraf Ekle</button>
+            <button mat-raised-button *ngIf="!user.user_data.profile_image" type="button" (click)="file.click()" i18n="@@photo-add">Fotoğraf
+              Ekle</button>
           </div>
         </mat-card>
       </div>
@@ -66,19 +69,20 @@
       <mat-card>
 
         <div class="field">
-          <p> Özel Bilgiler</p>
+          <p i18n="@@special-informations">Özel Bilgiler</p>
           <hr>
         </div>
         <div class="field">
           <div class="level">
             <div class="level-left">
               <div class="level-item">
-                Parola
+                <ng-container i18n="@@password">Parola</ng-container>
               </div>
             </div>
             <div class="level-right">
               <div class="level-item">
-                <button mat-stroked-button color="warn" (click)="resetPassword()">Parola Sıfırla</button>
+                <button mat-stroked-button color="warn" (click)="resetPassword()" i18n="@@reset-password">Parola
+                  Sıfırla</button>
               </div>
             </div>
           </div>
