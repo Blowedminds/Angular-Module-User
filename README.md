@@ -18,4 +18,11 @@ This module helps user to manage their profile.
 1. Add the module to Angular Project as a submodule. 
 `git submodule add https://github.com/bwqr/Angular-Module-User src/app/user`
 2. Import `UserModule` from inside `AppModule`.
-3. This module requires the fmblog-frontend-navigation module's routes. So there is no need to add routes.
+3. This module requires the fmblog-frontend-navigation module's routes. In addition to this, these are also required
+ `    public: {
+      url: '',
+      image: {
+        url: 'images/',
+        author: { url: 'author/' }
+      }
+    }`
