@@ -33,20 +33,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private userRequestService: UserRequestService,
-    private userService: UserService,
+    private requestService: UserRequestService,
+    private service: UserService,
     private cacheService: CacheService
   ) {
-    this.AUTHOR_IMAGE_URL = this.userRequestService.makeUrl('public.image.author');
+    this.AUTHOR_IMAGE_URL = this.requestService.makeUrl('storage.authors.images');
   }
 
   ngOnInit() {
-    const rq2 = this.cacheService.get('languages', this.userRequestService.makeGetRequest('admin.languages'))
-      .subscribe(response => this.languages = response);
+    this.subs.add(
+      this.cacheService.get('languages', this.requestService.makeGetRequest('admin.languages'))
+        .subscribe(response => this.languages = response)
+    );
 
-    const rq1 = this.userRequestService.getUserProfile().subscribe(response => this.user = response);
-
-    this.subs.add(rq1);
+    this.subs.add(
+      this.requestService.getUserProfile().subscribe(response => this.user = response)
+    );
   }
 
   ngOnDestroy() {
@@ -62,38 +64,39 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     reader.onload = (e: any) => {
 
-      const rq3 = this.userRequestService.postUserProfileImage(this.file.nativeElement.files.item(0)).subscribe(response => {
+      this.subs.add(
+        this.requestService.postUserProfileImage(this.file.nativeElement.files.item(0)).subscribe(response => {
 
-        this.snackBar.open(response.message, response.action, {
-          duration: 2000
-        });
+          this.snackBar.open(response.message, response.action, {
+            duration: 2000
+          });
 
-        item.setAttribute('src', e.target.result);
-      });
+          item.setAttribute('src', e.target.result);
+        })
+      );
 
-      this.subs.add(rq3);
     };
 
     reader.readAsDataURL(input.files.item(0));
   }
 
   updateProfile(f: NgForm) {
-    const rq2 = this.userRequestService.postUserProfile({
-      name: f.value.name,
-      biography: this.user.user_data.biography
-    }).subscribe(response => {
-      this.snackBar.open(response.message, response.action, {
-        duration: 2000
-      });
+    this.subs.add(
+      this.requestService.postUserProfile({
+        name: f.value.name,
+        biography: this.user.user_data.biography
+      }).subscribe(response => {
+        this.snackBar.open(response.message, response.action, {
+          duration: 2000
+        });
 
-      this.user = null;
+        this.user = null;
 
-      const rq1 = this.userRequestService.getUserProfile().subscribe((user: any) => this.user = user);
-
-      this.subs.add(rq1);
-    });
-
-    this.subs.add(rq2);
+        this.subs.add(
+          this.requestService.getUserProfile().subscribe((user: any) => this.user = user)
+        );
+      })
+    );
   }
 
   resetPassword() {
@@ -101,14 +104,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       disableClose: true
     });
 
-    const rq2 = dialogRef.afterClosed().subscribe(response => {
-      if (!response) {
-        return;
-      }
+    this.subs.add(
+      dialogRef.afterClosed().subscribe(response => {
+        if (!response) {
+          return;
+        }
 
-      this.userService.openSnack(this.snackBar, response.message, response.action);
-
-      rq2.unsubscribe();
-    });
+        this.service.openSnack(this.snackBar, {
+          message: 'Parola değiştirildi',
+          action: 'Tamam'
+        }, true);
+      })
+    );
   }
 }
