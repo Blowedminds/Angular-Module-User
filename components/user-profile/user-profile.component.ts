@@ -43,7 +43,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.cacheService.get('languages', this.requestService.makeGetRequest('admin.languages'))
+      this.cacheService.get('languages', this.requestService.makeGetRequest('core.language.languages'))
         .subscribe(response => this.languages = response)
     );
 
@@ -111,10 +111,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.service.openSnack(this.snackBar, {
-          message: 'Parola değiştirildi',
-          action: 'Tamam'
-        }, true);
+        this.service.openSnack(this.snackBar, 'Parola değiştirildi', 'Tamam', true);
       })
     );
   }
