@@ -25,7 +25,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   AUTHOR_IMAGE_URL: string;
 
-  @ViewChild('file', { static: false }) file: ElementRef;
+  @ViewChild('file') file: ElementRef;
 
   get isPageReady() {
     return this.user;
